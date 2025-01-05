@@ -1,38 +1,28 @@
+// components/VoiceRecorder.tsx
 "use client";
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Mic, MicOff } from "lucide-react";
 import { useVoiceRecorder } from "@/hooks/use-voice-recorder";
-import { toast } from "sonner";
 
-export default function VoiceChat() {
+interface VoiceRecorderProps {
+  onAudioRecorded: (audioBlob: Blob) => Promise<void>;
+  className?: string;
+}
+
+export default function VoiceRecorder({
+  onAudioRecorded,
+  className = "",
+}: VoiceRecorderProps) {
   const { isRecording, startRecording, stopRecording } = useVoiceRecorder({
-    onStop: async (audioBlob) => {
-      // Handle the audio blob here
-      const formData = new FormData();
-      formData.append("audio", audioBlob);
-      formData.append("type", "stock_management");
-
-      try {
-        const response = await fetch("/api/voice", {
-          method: "POST",
-          body: formData,
-        });
-
-        const data = await response.json();
-        console.log(data);
-        toast.success(data.response || "Voice message processed successfully");
-      } catch (error) {
-        console.error("Error processing voice:", error);
-        toast.error("Failed to process voice message");
-      }
+    onStop: async (audioBlob: Blob) => {
+      await onAudioRecorded(audioBlob);
     },
   });
 
   return (
-    <Card className="p-6 max-w-2xl mx-auto mt-8">
+    <Card className={`p-6 max-w-2xl mx-auto mt-8 ${className}`}>
       <div className="flex flex-col items-center gap-4">
         <Button
           variant={isRecording ? "destructive" : "default"}
