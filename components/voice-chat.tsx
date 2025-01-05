@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Mic, MicOff, Send } from "lucide-react";
@@ -11,56 +11,76 @@ export default function VoiceChat() {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
-  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.mediaDevices
         .getUserMedia({ audio: true })
         .then((stream) => {
-          const recorder = new MediaRecorder(stream);
-          recorder.ondataavailable = (e) => {
-            setAudioChunks((chunks) => [...chunks, e.data]);
+          const recorder = new MediaRecorder(stream, {
+            mimeType: "audio/webm;codecs=opus",
+          });
+
+          recorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              audioChunksRef.current.push(event.data);
+            }
           };
+
           setMediaRecorder(recorder);
         })
         .catch((err) => {
           console.error("Error accessing microphone:", err);
-          toast.error("Could not access microphone");
+          toast.error("Error accessing microphone");
         });
     }
   }, []);
 
   const startRecording = () => {
-    setAudioChunks([]);
-    mediaRecorder?.start();
-    setIsRecording(true);
+    if (mediaRecorder && mediaRecorder.state === "inactive") {
+      audioChunksRef.current = [];
+      mediaRecorder.start(250); // Collect data every 250ms
+      setIsRecording(true);
+    }
   };
 
   const stopRecording = async () => {
-    mediaRecorder?.stop();
-    setIsRecording(false);
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
+      setIsRecording(false);
 
-    // Create audio blob and send to server
-    console.log(audioChunks);
+      // Wait for the last chunks to be processed
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-    const formData = new FormData();
-    formData.append("audio", audioBlob);
+      if (audioChunksRef.current.length === 0) {
+        toast.error("No audio recorded");
+        return;
+      }
 
-    try {
-      console.log(formData);
-      const response = await fetch("/api/voice", {
-        method: "POST",
-        body: formData,
+      // Create audio blob and send to server
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: "audio/webm;codecs=opus",
       });
-      const data = await response.json();
+      const formData = new FormData();
+      formData.append("audio", audioBlob);
+      formData.append("type", "stock_management");
 
-      console.log(data);
+      try {
+        const response = await fetch("/api/voice", {
+          method: "POST",
+          body: formData,
+        });
 
-      toast.success("Voice message processed successfully");
-    } catch (error) {
-      toast.error("Failed to process voice message");
+        const data = await response.json();
+
+        console.log(data);
+
+        toast.success(data.response || "Voice message processed successfully");
+      } catch (error) {
+        console.error("Error processing voice:", error);
+        toast.error("Failed to process voice message");
+      }
     }
   };
 
