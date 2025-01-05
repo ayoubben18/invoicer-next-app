@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
-import VoiceChat from "@/components/voice-chat";
 import { FileText, Package, Users } from "lucide-react";
+import { VoiceChat } from "@/components/shared";
 
 export default function Home() {
   return (

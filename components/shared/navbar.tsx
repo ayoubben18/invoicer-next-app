@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, FileText, Package, Users } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -34,7 +34,8 @@ export function Navbar() {
                     variant={pathname === item.href ? "default" : "ghost"}
                     className={cn(
                       "flex items-center space-x-2",
-                      pathname === item.href && "bg-primary text-primary-foreground"
+                      pathname === item.href &&
+                        "bg-primary text-primary-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4" />

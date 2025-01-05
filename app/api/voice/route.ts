@@ -35,6 +35,9 @@ export async function POST(req: Request) {
       model: "whisper-1",
     });
 
+    // structured output
+    // get the transcripted audio and send it to the user
+
     // Process the transcribed text with GPT-4
     const completion = await openai.chat.completions.create({
       model: "gpt-4",

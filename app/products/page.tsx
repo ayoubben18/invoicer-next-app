@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
-import { RecordingControls } from "@/components/recording-controls";
+import { RecordingControls } from "@/components/shared/recording-controls";
 
 export default function ProductsPage() {
   const [isRecording, setIsRecording] = useState(false);

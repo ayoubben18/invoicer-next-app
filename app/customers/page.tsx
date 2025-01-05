@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
-import { RecordingControls } from "@/components/recording-controls";
+import { RecordingControls } from "@/components/shared/recording-controls";
 
 export default function CustomersPage() {
   const [isRecording, setIsRecording] = useState(false);
