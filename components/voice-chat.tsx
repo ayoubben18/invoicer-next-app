@@ -42,6 +42,7 @@ export default function VoiceChat() {
       audioChunksRef.current = [];
       mediaRecorder.start(250); // Collect data every 250ms
       setIsRecording(true);
+      console.log("Recording");
     }
   };
 
