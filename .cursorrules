@@ -1,0 +1,16 @@
+* Do not hallucinate
+* search for the latest updates
+* this app is for managing stock mainly 
+
+Hello claude, we want to build a saas powered by AI voice that can help sellers create invoices and manage their store using just AI voice or text chat,
+we are using Next.js for the main application, and SST for the infrastucture and the processing pipelines and events of email sending and notifications and analytics and all of that stuff, we are allowed to use twilio and open ai api
+The features in the app goes like this:
+* The user can either type or talk to the App, which itself will decide what to do
+* The user can manage his stock by talking to the app telling to add certain products and giving the provider of products informations(phone number, identity card, name ...)
+
+!!!! The phone number is very important on the first deal with the provider because we are gonna use it to make calls to notify him about certain stuff using twilio and open ai voice chat !!!!
+
+The features will go like this:
+- there a teams in the app, there is the admin wich is the responsible for managing stock (each time a provider provides him with products the admin will tell the identity card number of the provider and the products informations if it is the first time a provider comes to him he will provide the LLM with provider full name and phone number) the LLM should confirm that he is adding the products to the stock and confirm again when the process is done adding the provider infos to the database and adding the stock.
+- the other team members can sell the stock the app have a manual interface of invoicing clients, we have this feature done so you don't have to worry about it.
+- once the stock of a certain products is finished, there are 2 possibilities either the app will call the admin and tell him about that always using voice chat and twilio and ask the admin if he wants the app to call the provider and ask him to bring more of that certain product, there an edge when the products sales are too good like 100 piece is gone in 1 day the bot will automatically take action and call the provider to bring more, if the provider confirms that he has the stock available it will notify the admin that the provider will bring the products. if the product is not available the app will call the admin again and tell him that the product is not available.
