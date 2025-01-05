@@ -19,6 +19,7 @@ import {
   json,
   inet,
   pgEnum,
+  vector,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
@@ -795,9 +796,12 @@ export const providers = pgTable(
     created_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
+    description: text(),
+    category: text(),
     updated_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
+    embedding: vector("embedding", { dimensions: 1536 }),
   },
   (table) => ({
     phone_idx: uniqueIndex("providers_phone_idx").on(table.phone_number),
@@ -815,6 +819,7 @@ export const products = pgTable(
       .notNull()
       .references(() => teams.id, { onDelete: "cascade" }),
     name: text().notNull(),
+    description: text(),
     sku: text().notNull(),
     quantity: integer().notNull().default(0),
     restock_threshold: integer().notNull().default(10),
@@ -824,6 +829,7 @@ export const products = pgTable(
     updated_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
+    embedding: vector("embedding", { dimensions: 1536 }),
   },
   (table) => ({
     sku_idx: uniqueIndex("products_sku_idx").on(table.sku),

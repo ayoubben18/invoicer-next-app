@@ -6,7 +6,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, FileText, Package, Users } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-
+import { useMutation } from "@tanstack/react-query";
+import { signOut } from "@/services/database";
+import { useRouter } from "next/navigation";
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Invoices", href: "/invoices", icon: FileText },
@@ -15,7 +17,12 @@ const navigation = [
 ];
 
 export function Navbar() {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const { mutateAsync } = useMutation({
+    mutationFn: signOut,
+  });
 
   return (
     <nav className="border-b">
@@ -45,6 +52,15 @@ export function Navbar() {
               );
             })}
             <ThemeToggle />
+            <Button
+              onClick={async () => {
+                await mutateAsync();
+                router.push("/login");
+              }}
+              variant={"destructive"}
+            >
+              Sign Out
+            </Button>
           </div>
         </div>
       </div>
