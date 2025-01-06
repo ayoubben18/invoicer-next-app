@@ -11,6 +11,7 @@ export const authenticatedAction = createSafeAction.setMiddleware(async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  // console.log("user", user);
 
   if (!user) {
     throw new Error("Unauthorized");
