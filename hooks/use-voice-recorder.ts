@@ -3,20 +3,21 @@ import { toast } from "sonner";
 
 interface UseVoiceRecorderProps {
   onStop?: (audioBlob: Blob) => void;
+  onCancel?: () => void;
 }
 
-export function useVoiceRecorder({ onStop }: UseVoiceRecorderProps = {}) {
+export function useVoiceRecorder({ onStop, onCancel }: UseVoiceRecorderProps = {}) {
   const [isRecording, setIsRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.mediaDevices
         .getUserMedia({ audio: true })
         .then((stream) => {
+          streamRef.current = stream;
           const recorder = new MediaRecorder(stream, {
             mimeType: "audio/webm;codecs=opus",
           });
@@ -33,6 +34,12 @@ export function useVoiceRecorder({ onStop }: UseVoiceRecorderProps = {}) {
           console.error("Error accessing microphone:", err);
           toast.error("Error accessing microphone");
         });
+
+      return () => {
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+        }
+      };
     }
   }, []);
 
@@ -66,9 +73,21 @@ export function useVoiceRecorder({ onStop }: UseVoiceRecorderProps = {}) {
     }
   };
 
+  const cancelRecording = () => {
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
+      setIsRecording(false);
+      audioChunksRef.current = []; // Clear the recorded chunks
+      if (onCancel) {
+        onCancel();
+      }
+    }
+  };
+
   return {
     isRecording,
     startRecording,
     stopRecording,
+    cancelRecording,
   };
 }
