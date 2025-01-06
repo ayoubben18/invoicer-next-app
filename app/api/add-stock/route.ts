@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import twilio from "twilio";
+import {} from "@langchain/openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
