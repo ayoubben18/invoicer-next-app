@@ -30,6 +30,7 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
   if(user){
     const authUser = await getUser();
+    // console.log("user", authUser);
     email = authUser.email;
     fullName = authUser.fullName;
   }

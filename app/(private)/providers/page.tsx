@@ -18,34 +18,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getProducts } from "@/services/api-calls/get-products";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { getProviders } from './../../../services/api-calls/get-providers';
 
-export default function ProductList() {
+export default function ProviderList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [quantityFilter, setQuantityFilter] = useState<"all" | "low" | "high">(
-    "all"
-  );
+  const [categoryFilter, setCategoryFilter] = useState<string | "all">("all");
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => getProducts(),
+    queryKey: ["providers"],
+    queryFn: () => getProviders(),
   });
 
-  const filteredData = data?.filter((product) => {
-    const matchesSearch = product.name
+  // Extract unique categories from the fetched data
+  const uniqueCategories = [
+    ...new Set(data?.map((provider) => provider.category) || []),
+  ];
+
+  const filteredData = data?.filter((provider) => {
+    const matchesSearch = provider.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
-    const matchesQuantity =
-      quantityFilter === "all" ||
-      (quantityFilter === "low" && product.quantity <= 50) ||
-      (quantityFilter === "high" && product.quantity > 50);
+    const matchesCategory =
+      categoryFilter === "all" || provider.category === categoryFilter;
 
-    return matchesSearch && matchesQuantity;
+    return matchesSearch && matchesCategory;
   });
+
   const router = useRouter();
 
   return (
@@ -53,18 +55,18 @@ export default function ProductList() {
       {/* Title */}
       <div className="flex flex-row justify-between">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Products List
+          Providers List
         </h1>
         {/* Add Product Button */}
         <div className="flex mb-4">
-          <Button onClick={() => router.push("/add-product")}>
-            Add Product
+          <Button onClick={() => router.push("/add-provider")}>
+            Add Provider
           </Button>
         </div>
       </div>
       <Card className="p-5">
         {/* Search and Filter Controls */}
-        <div className="flex flex-wrap items-center gap-4 mb-4">
+        <div className="flex flex-wrap items-center gap-4 mb-2">
           <Input
             type="text"
             placeholder="Search by name..."
@@ -74,18 +76,19 @@ export default function ProductList() {
           />
 
           <Select
-            value={quantityFilter}
-            onValueChange={(value) =>
-              setQuantityFilter(value as "all" | "low" | "high")
-            }
+            value={categoryFilter}
+            onValueChange={(value) => setCategoryFilter(value)}
           >
             <SelectTrigger className="w-full md:w-1/4">
-              <SelectValue placeholder="Filter by quantity" />
+              <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
-              <SelectItem value="low">Low Stock (less than 50)</SelectItem>
-              <SelectItem value="high">High Stock (50 or more)</SelectItem>
+              {uniqueCategories.map((category, index) => (
+                <SelectItem key={index} value={category!}>
+                  {category}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -105,14 +108,14 @@ export default function ProductList() {
         {/* Error State */}
         {error && (
           <div className="flex justify-center items-center text-red-500">
-            Failed to load products: {String(error)}
+            Failed to load providers: {String(error)}
           </div>
         )}
 
         {/* No Data */}
         {!isLoading && (!filteredData || filteredData.length === 0) && (
           <div className="text-center text-gray-500 dark:text-gray-400">
-            No products found.
+            No providers found.
           </div>
         )}
 
@@ -123,20 +126,18 @@ export default function ProductList() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Quantity</TableHead>
-                  <TableHead>Created At</TableHead>
+                  <TableHead>Identity card</TableHead>
+                  <TableHead>Phone number</TableHead>
+                  <TableHead>Category</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredData.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>$99.9</TableCell>
-                    <TableCell>{product.quantity}</TableCell>
-                    <TableCell>
-                      {new Date(product.created_at).toLocaleDateString()}
-                    </TableCell>
+                {filteredData.map((provider) => (
+                  <TableRow key={provider.id}>
+                    <TableCell>{provider.name}</TableCell>
+                    <TableCell>{provider.identity_card}</TableCell>
+                    <TableCell>{provider.phone_number}</TableCell>
+                    <TableCell>{provider.category}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

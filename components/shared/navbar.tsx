@@ -19,10 +19,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const navigation = [
   { name: "Chat with AI", href: "/", icon: Bot },
-  { name: "Invoice", href: "/invoice", icon: FileText },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/products", icon: Package },
-  { name: "Customers", href: "/customers", icon: Users },
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard }
+  { name: "Providers", href: "/providers", icon: Users },
+  { name: "Invoice", href: "/invoice", icon: FileText }
 ];
 
 interface NavbarProps {
@@ -58,7 +58,7 @@ export function Navbar({ user }: NavbarProps) {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <FileText className="h-6 w-6 text-primary" />
-            <span className="ml-2 text-lg font-semibold">InvoiceAI</span>
+            <span className="ml-2 text-lg font-semibold">Invoicer</span>
           </div>
           
           <div className="flex items-center space-x-4">
