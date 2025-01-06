@@ -1,20 +1,8 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { FileText, Package, Users } from "lucide-react";
-import { processStockManagementVoice } from "@/services/api-calls/admin-add";
-import { toast } from "sonner";
-import VoiceRecorder from "@/components/shared/voice-chat";
 
 export default function Home() {
-  const handleStockManagementVoice = async (audioBlob: Blob) => {
-    try {
-      const data = await processStockManagementVoice(audioBlob);
-      toast.success(data.response || "Voice processed successfully");
-    } catch (error) {
-      console.error("Error processing voice:", error);
-      toast.error("Failed to process voice message");
-    }
-  };
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -46,7 +34,6 @@ export default function Home() {
           </p>
         </Card>
       </div>
-      <VoiceRecorder onAudioRecorded={handleStockManagementVoice} />;
     </main>
   );
 }

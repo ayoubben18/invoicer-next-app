@@ -43,7 +43,7 @@ export function LoginForm() {
       error: "Failed to log in",
     });
 
-    router.push(routes.invoices.route);
+    router.push("/manage-inventory");
   };
 
   return (

@@ -60,7 +60,7 @@ const signUp = publicAction.create(
   }
 );
 
-const signOut = authenticatedAction.create(async ({}) => {
+const signOut = publicAction.create(async ({}) => {
   const supabase = await createClient();
   await supabase.auth.signOut();
 });
