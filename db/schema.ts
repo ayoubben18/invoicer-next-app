@@ -740,6 +740,11 @@ export const callStatusEnum = pgEnum("call_status", [
   "completed",
   "failed",
 ]);
+export const processStatusEnum = pgEnum("process_status", [
+  "pending",
+  "completed",
+  "failed",
+]);
 
 // Teams table
 export const teams = pgTable("teams", {
@@ -858,6 +863,24 @@ export const stockTransactions = pgTable(
   (table) => ({
     product_idx: index("transactions_product_idx").on(table.product_id),
     user_idx: index("transactions_user_idx").on(table.user_id),
+  })
+);
+
+export const processes = pgTable(
+  "processes",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    team_id: uuid()
+      .notNull()
+      .references(() => teams.id, { onDelete: "cascade" }),
+    text: text().notNull(),
+    created_at: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    status: processStatusEnum("status").notNull().default("pending"),
+  },
+  (table) => ({
+    team_idx: index("processes_team_idx").on(table.team_id),
   })
 );
 
