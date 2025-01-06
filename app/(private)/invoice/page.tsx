@@ -7,23 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Mic, MicOff, Send } from "lucide-react";
 import { toast } from "sonner";
 import React from "react";
-import { processStockManagementVoice } from "@/services/api-calls/admin-add";
 import VoiceRecorder from "@/components/shared/voice-chat";
 
 export default function InvoicesPage() {
   // Text chat state
   const [message, setMessage] = useState("");
-  
-
-  const handleStockManagementVoice = async (audioBlob: Blob) => {
-    try {
-      const data = await processStockManagementVoice(audioBlob);
-      toast.success(data.response || "Voice processed successfully");
-    } catch (error) {
-      console.error("Error processing voice:", error);
-      toast.error("Failed to process voice message");
-    }
-  };
 
   // Text chat handlers
   const handleSendMessage = () => {
@@ -74,7 +62,7 @@ export default function InvoicesPage() {
           </TabsContent>
           
           <TabsContent value="voice" className="space-y-4">
-            <VoiceRecorder onAudioRecorded={handleStockManagementVoice} />
+            <VoiceRecorder/>
           </TabsContent>
         </Tabs>
       </Card>

@@ -1,8 +1,13 @@
 import { RegisterForm } from "@/components/(auth)/register/register-form";
+import { Card } from "@/components/ui/card";
 import React from "react";
 
 const page = () => {
-  return <RegisterForm />;
+  return (
+    <Card className="w-1/3 mx-auto p-5">
+      <RegisterForm />
+    </Card>
+  )
 };
 
 export default page;
