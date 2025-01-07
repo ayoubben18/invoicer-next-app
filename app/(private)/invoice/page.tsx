@@ -19,6 +19,7 @@ import {
   updateProductQuantity,
 } from "@/services/database/sales";
 import { toast } from "sonner";
+import { getTeam } from "@/services/database/get-team";
 
 interface TeamInfo {
   name: string;
@@ -60,6 +61,12 @@ export default function SalesPage() {
   });
 
   const queryClient = useQueryClient();
+
+  //this is not currently used
+  const { data: team } = useQuery({
+    queryKey: ["team"],
+    queryFn: () => getTeam(),
+  });
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["available-products"],

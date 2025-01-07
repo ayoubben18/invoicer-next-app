@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Building2, Calendar, MapPin, Upload } from "lucide-react";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { getTeam } from "@/services/database/get-team";
 
 export default function TeamPage() {
   const [teamInfo, setTeamInfo] = useState({
@@ -18,6 +20,12 @@ export default function TeamPage() {
       "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     location: "San Francisco, CA",
     foundedYear: "2018",
+  });
+
+  //this is not currently used
+  const { data: team, isLoading } = useQuery({
+    queryKey: ["team"],
+    queryFn: () => getTeam(),
   });
 
   const [isEditing, setIsEditing] = useState(false);
