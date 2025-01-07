@@ -30,7 +30,7 @@ export const authenticatedAction = createSafeAction.setMiddleware(async () => {
   return {
     userId: user.id,
     email: user.email!,
-    teamId: team.teamID,
+    teamId: team.teamID!,
     fullName: team.fullName
   };
 });

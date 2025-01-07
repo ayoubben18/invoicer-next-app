@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { getProviders } from './../../../services/api-calls/get-providers';
+import { getProviders } from '../../../services/database/get-providers';
 
 export default function ProviderList() {
   const [searchTerm, setSearchTerm] = useState("");

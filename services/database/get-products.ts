@@ -10,7 +10,7 @@ export const getProducts = authenticatedAction.create(async (context) => {
     const productsList = await db
       .select()
       .from(products)
-      .where(eq(products.team_id, context.teamId!));
+      .where(eq(products.team_id, context.teamId));
 
     return productsList;
   }

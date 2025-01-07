@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getProducts } from "@/services/api-calls/get-products";
+import { getProducts } from "@/services/database/get-products";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
