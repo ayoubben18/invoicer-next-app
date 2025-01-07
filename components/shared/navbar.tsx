@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, FileText, Package, Users, LogIn, UserPlus } from "lucide-react";
+import { Bot, LayoutDashboard, FileText, Package, Users, LogIn, UserPlus } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/services/database";
@@ -18,17 +18,18 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Manage Inventory", href: "/manage-inventory", icon: FileText },
+  { name: "Chat with AI", href: "/", icon: Bot },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/products", icon: Package },
-  { name: "Customers", href: "/customers", icon: Users },
+  { name: "Providers", href: "/providers", icon: Users },
+  { name: "Invoice", href: "/invoice", icon: FileText }
 ];
 
 interface NavbarProps {
-  user?: {
+  user: {
     name?: string;
-    email: string;
-  } | null;
+    email?: string;
+  };
 }
 
 export function Navbar({ user }: NavbarProps) {
@@ -48,7 +49,7 @@ export function Navbar({ user }: NavbarProps) {
         .join('')
         .toUpperCase();
     }
-    return user?.email.slice(0, 2).toUpperCase() || 'U';
+    return user.email?.slice(0, 2).toUpperCase() || 'U';
   };
 
   return (
@@ -57,11 +58,11 @@ export function Navbar({ user }: NavbarProps) {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <FileText className="h-6 w-6 text-primary" />
-            <span className="ml-2 text-lg font-semibold">InvoiceAI</span>
+            <span className="ml-2 text-lg font-semibold">Invoicer</span>
           </div>
           
           <div className="flex items-center space-x-4">
-            {user ? (
+            {user.email ? (
               <>
                 {navigation.map((item) => {
                   const Icon = item.icon;
@@ -102,6 +103,13 @@ export function Navbar({ user }: NavbarProps) {
                       <span>{user.email}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        router.push("/team");
+                      }}
+                    >
+                      Team
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-red-500 focus:text-red-600"
                       onSelect={async () => {

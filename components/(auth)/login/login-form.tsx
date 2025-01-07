@@ -56,9 +56,8 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter your email here" {...field} />
               </FormControl>
-              <FormDescription>This is your email.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -72,7 +71,6 @@ export function LoginForm() {
               <FormControl>
                 <Input placeholder="********" type="password" {...field} />
               </FormControl>
-              <FormDescription>This is your password.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

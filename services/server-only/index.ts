@@ -3,7 +3,7 @@ import { createSafeAction } from "next-safe-fetch";
 import { createClient } from "@/utils/supabase/supabase-client";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { teams } from "@/db/schema";
+import { teams, users } from "@/db/schema";
 
 export const authenticatedAction = createSafeAction.setMiddleware(async () => {
   const supabase = await createClient();
@@ -17,7 +17,11 @@ export const authenticatedAction = createSafeAction.setMiddleware(async () => {
     throw new Error("Unauthorized");
   }
 
-  const [team] = await db.select().from(teams).where(eq(teams.id, user.id));
+  const [team] = await db
+    .select({ fullName: users.name, teamID: teams.id })
+    .from(users)
+    .leftJoin(teams, eq(teams.id, users.team_id))
+    .where(eq(users.id, user.id));
 
   if (!team) {
     throw new Error("Team not found");
@@ -25,8 +29,9 @@ export const authenticatedAction = createSafeAction.setMiddleware(async () => {
 
   return {
     userId: user.id,
-    email: user.email,
-    teamId: team.id,
+    email: user.email!,
+    teamId: team.teamID!,
+    fullName: team.fullName
   };
 });
 
