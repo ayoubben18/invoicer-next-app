@@ -8,6 +8,7 @@ import { useVoiceRecorder } from "@/hooks/use-voice-recorder";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { generateVoice } from "@/services/llm-calls/voice";
 
 interface VoiceRecorderProps {
   className?: string;
@@ -15,21 +16,22 @@ interface VoiceRecorderProps {
 
 export default function VoiceRecorder({ className = "" }: VoiceRecorderProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const { isRecording, startRecording, cancelRecording , stopRecording } = useVoiceRecorder({
-    onStop: async (audioBlob: Blob) => {
-      const audio = await mutateAsync({ audioBlob });
-      if (audio) {
-        setIsPlaying(true);
-        await audio.play();
-        audio.onended = () => {
-          setIsPlaying(false);
-        };
-      }
-    },
-    onCancel: () => {
-      toast("Recording cancelled");
-    }
-  });
+  const { isRecording, startRecording, cancelRecording, stopRecording } =
+    useVoiceRecorder({
+      onStop: async (audioBlob: Blob) => {
+        const audio = await mutateAsync({ audioBlob });
+        if (audio) {
+          setIsPlaying(true);
+          await audio.play();
+          audio.onended = () => {
+            setIsPlaying(false);
+          };
+        }
+      },
+      onCancel: () => {
+        toast("Recording cancelled");
+      },
+    });
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: onAudioRecording,
@@ -46,16 +48,20 @@ export default function VoiceRecorder({ className = "" }: VoiceRecorderProps) {
               <div className="absolute inset-0 rounded-full animate-ping-slower bg-red-500/10" />
             </>
           )}
-          
+
           {/* Loading animation */}
           {isPending && (
             <div className="absolute -inset-4">
               <div className="loading-spinner">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="loading-spinner-segment" style={{ 
-                    transform: `rotate(${i * 45}deg)`,
-                    animationDelay: `${i * 0.1}s`
-                  }} />
+                  <div
+                    key={i}
+                    className="loading-spinner-segment"
+                    style={{
+                      transform: `rotate(${i * 45}deg)`,
+                      animationDelay: `${i * 0.1}s`,
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -97,7 +103,7 @@ export default function VoiceRecorder({ className = "" }: VoiceRecorderProps) {
             </Button>
           </div>
         )}
-        
+
         {/* Playing animation below the mic */}
         {isPlaying && (
           <div className="h-8 flex items-center justify-center mt-2">
@@ -109,7 +115,7 @@ export default function VoiceRecorder({ className = "" }: VoiceRecorderProps) {
                   style={{
                     height: "16px",
                     animation: "sound-wave 1s ease-in-out infinite",
-                    animationDelay: `${i * 0.2}s`
+                    animationDelay: `${i * 0.2}s`,
                   }}
                 />
               ))}
@@ -121,7 +127,10 @@ export default function VoiceRecorder({ className = "" }: VoiceRecorderProps) {
           {isRecording && "Recording..."}
           {isPending && "Processing your voice..."}
           {isPlaying && "Playing response..."}
-          {!isRecording && !isPending && !isPlaying && "Click to start recording"}
+          {!isRecording &&
+            !isPending &&
+            !isPlaying &&
+            "Click to start recording"}
         </p>
       </div>
     </Card>
@@ -146,14 +155,8 @@ async function onAudioRecording({ audioBlob }: AudioRecording) {
   formData.append("audio", wavBlob);
 
   try {
-    const response = await fetch("/api/voice", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) throw new Error("Failed to process voice");
-
-    const audioBlob = await response.blob();
+    const newFormData = await generateVoice({ formData });
+    const audioBlob = newFormData.get("audio") as Blob;
     const audioUrl = URL.createObjectURL(audioBlob);
     const audio = new Audio(audioUrl);
     // is playing

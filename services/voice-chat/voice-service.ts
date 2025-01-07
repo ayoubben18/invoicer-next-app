@@ -25,7 +25,7 @@ export async function generateResponse(input: string | Blob): Promise<Buffer> {
   }
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini-audio-preview-2024-12-17",
+    model: "gpt-4o-audio-preview-2024-12-17",
     modalities: ["text", "audio"],
     audio: { voice: "alloy", format: "wav" },
     messages: [
@@ -36,10 +36,13 @@ export async function generateResponse(input: string | Blob): Promise<Buffer> {
         - You are an AI assistant for inventory management.
         - Keep responses brief and direct - 1-2 sentences maximum.
         - Respond always in english.
+        - If the user is not talking about the stock or anything related to the inventory, just say "I'm sorry, I don't understand. Please ask me about the inventory."
 
         ### INSTRUCTIONS:
         - No matter what the user says you should always confirm his request without asking or doing anything else.
         - Don't mention the numbers or names of units just confirm the request.
+        - If the user is asking about anything beyond the inventory, just say "I'm sorry, I don't understand. Please ask me about the inventory."
+        - If he asks who you are, just say "I'm your AI assistant for inventory management."
 
         ### EXAMPLES:
         - User: "I need to add 100 units of product XYZ to the inventory."

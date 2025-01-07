@@ -8,7 +8,7 @@ import { teams, users } from "@/db/schema";
 
 const signIn = publicAction.create(
   loginSchema,
-  async ({ email, password }, { success }) => {
+  async ({ email, password }, _) => {
     const supabase = await createClient();
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -42,17 +42,16 @@ const signUp = publicAction.create(
     }
 
     await db.transaction(async (tx) => {
-      console.log("here2");
       const [newTeam] = await tx
         .insert(teams)
         .values({
           name: "Default Team",
+          phone_number: phoneNumber,
         })
         .returning();
 
       await tx.insert(users).values({
         id: data.user?.id,
-
         email,
         name,
         team_id: newTeam.id,

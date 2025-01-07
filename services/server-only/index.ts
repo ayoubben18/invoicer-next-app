@@ -4,14 +4,13 @@ import { createClient } from "@/utils/supabase/supabase-client";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { teams, users } from "@/db/schema";
-
+import { Redis } from "@upstash/redis";
 export const authenticatedAction = createSafeAction.setMiddleware(async () => {
   const supabase = await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // console.log("user", user);
 
   if (!user) {
     throw new Error("Unauthorized");
@@ -31,7 +30,7 @@ export const authenticatedAction = createSafeAction.setMiddleware(async () => {
     userId: user.id,
     email: user.email!,
     teamId: team.teamID!,
-    fullName: team.fullName
+    fullName: team.fullName,
   };
 });
 
@@ -40,3 +39,5 @@ export const publicAction = createSafeAction.setMiddleware(async () => {
     success: true,
   };
 });
+
+export const redisClient = Redis.fromEnv();
