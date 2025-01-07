@@ -104,6 +104,13 @@ export function Navbar({ user }: NavbarProps) {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
+                      onSelect={() => {
+                        router.push("/team");
+                      }}
+                    >
+                      Team
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
                       className="text-red-500 focus:text-red-600"
                       onSelect={async () => {
                         await mutateAsync();
