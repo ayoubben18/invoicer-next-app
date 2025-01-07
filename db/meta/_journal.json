@@ -71,6 +71,13 @@
       "when": 1736246817861,
       "tag": "0009_bizarre_toro",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1736252302493,
+      "tag": "0010_careless_menace",
+      "breakpoints": true
     }
   ]
 }
