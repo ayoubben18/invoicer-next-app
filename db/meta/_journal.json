@@ -36,6 +36,41 @@
       "when": 1736170861502,
       "tag": "0004_sparkling_pete_wisdom",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1736189075837,
+      "tag": "0005_slippery_wendigo",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1736189358929,
+      "tag": "0006_outgoing_micromacro",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1736193153369,
+      "tag": "0007_nostalgic_squadron_supreme",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1736246762301,
+      "tag": "0008_curly_agent_brand",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1736246817861,
+      "tag": "0009_bizarre_toro",
+      "breakpoints": true
     }
   ]
 }

@@ -51,6 +51,8 @@ const signUp = publicAction.create(
         .returning();
 
       await tx.insert(users).values({
+        id: data.user?.id,
+
         email,
         name,
         team_id: newTeam.id,

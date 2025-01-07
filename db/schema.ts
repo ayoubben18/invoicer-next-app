@@ -796,13 +796,14 @@ export const providers = pgTable(
       .notNull()
       .references(() => teams.id, { onDelete: "cascade" }),
     name: text().notNull(),
-    phone_number: text().notNull(),
-    identity_card: text().notNull(),
+    phone_number: text(),
+    identity_card: text(),
+    email: text(),
+    description: text(),
+    category: text(),
     created_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
-    description: text(),
-    category: text(),
     updated_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
@@ -823,11 +824,15 @@ export const products = pgTable(
     team_id: uuid()
       .notNull()
       .references(() => teams.id, { onDelete: "cascade" }),
+    provider_id: uuid()
+      .notNull()
+      .references(() => providers.id, { onDelete: "cascade" }),
     name: text().notNull(),
     description: text(),
-    sku: text().notNull(),
+    sku: text(),
     quantity: integer().notNull().default(0),
-    restock_threshold: integer().notNull().default(10),
+    price: integer().default(0),
+    restock_threshold: integer().default(10),
     created_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
       .notNull(),
@@ -839,6 +844,17 @@ export const products = pgTable(
   (table) => ({
     sku_idx: uniqueIndex("products_sku_idx").on(table.sku),
     team_idx: index("products_team_idx").on(table.team_id),
+    provider_idx: index("products_provider_idx").on(table.provider_id),
+    fk_provider_id: foreignKey({
+      columns: [table.provider_id],
+      foreignColumns: [providers.id],
+      name: "products_provider_id_fkey",
+    }).onDelete("cascade"),
+    fk_team_id: foreignKey({
+      columns: [table.team_id],
+      foreignColumns: [teams.id],
+      name: "products_team_id_fkey",
+    }).onDelete("cascade"),
   })
 );
 
@@ -850,11 +866,12 @@ export const stockTransactions = pgTable(
     product_id: uuid()
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }),
-    user_id: uuid()
+    team_id: uuid()
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => teams.id, { onDelete: "cascade" }),
+    customer_name: text(),
     quantity: integer().notNull(),
-    type: transactionTypeEnum("type").notNull(),
+    type: transactionTypeEnum("type").notNull().default("sale"),
     notes: text(),
     created_at: timestamp({ withTimezone: true, mode: "string" })
       .defaultNow()
@@ -862,7 +879,7 @@ export const stockTransactions = pgTable(
   },
   (table) => ({
     product_idx: index("transactions_product_idx").on(table.product_id),
-    user_idx: index("transactions_user_idx").on(table.user_id),
+    team_idx: index("transactions_team_idx").on(table.team_id),
   })
 );
 
@@ -907,3 +924,11 @@ export const calls = pgTable(
     provider_idx: index("calls_provider_idx").on(table.provider_id),
   })
 );
+
+export type Team = typeof teams.$inferSelect;
+export type User = typeof users.$inferSelect;
+export type Provider = typeof providers.$inferSelect;
+export type Product = typeof products.$inferSelect;
+export type StockTransaction = typeof stockTransactions.$inferSelect;
+export type Process = typeof processes.$inferSelect;
+export type Call = typeof calls.$inferSelect;
