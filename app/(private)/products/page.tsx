@@ -84,8 +84,8 @@ export default function ProductList() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
-              <SelectItem value="low">Low Stock (less than 50)</SelectItem>
-              <SelectItem value="high">High Stock (50 or more)</SelectItem>
+              <SelectItem value="low">Low Stock (50 or less)</SelectItem>
+              <SelectItem value="high">High Stock (more than 50)</SelectItem>
             </SelectContent>
           </Select>
         </div>
