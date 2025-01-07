@@ -26,6 +26,7 @@ export const updateProductQuantity = authenticatedAction.create(
     customerName: z.string().optional(),
     notes: z.string().optional(),
   }),
+  //USE TRANSACTION YOU FUCKING IDIOT
   async ({ productId, quantity, customerName, notes }, context) => {
     // Update product quantity
     await db
