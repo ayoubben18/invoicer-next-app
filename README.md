@@ -164,12 +164,6 @@ npm run dev
 - React context providers
 - Global state management setup
 
-#### `sst/`
-
-- Infrastructure as code using SST
-- AWS resource configurations
-- Deployment pipelines
-
 ### Stock Management
 
 1. Admin can add new products via voice/text
