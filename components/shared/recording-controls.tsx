@@ -11,7 +11,7 @@ interface RecordingControlsProps {
   onCancelRecording: () => void;
 }
 
-export function RecordingControls({
+function RecordingControls({
   isRecording,
   onStartRecording,
   onStopRecording,
@@ -51,3 +51,5 @@ export function RecordingControls({
     </div>
   );
 }
+
+export default RecordingControls;

@@ -1,1 +1,10 @@
-export { default as VoiceChat } from "./voice-chat";
+export { default as VoiceChat } from "../(private)/(home)/voice-chat";
+export { default as Navbar } from "./navbar";
+export { default as FormError } from "./form-error";
+export { default as PageWrapper } from "./page-wrapper";
+export { default as RecordingControls } from "./recording-controls";
+export { default as ThemeProvider } from "./theme-provider";
+export { default as TableLoadingSkeleton } from "./table-loading-skeleton";
+export { default as PaginationWithLinks } from "./pagination";
+export { default as ThemeToggle } from "./theme-toggle";
+export { default as ItemsTable } from "./items-table";

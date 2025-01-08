@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Building2, Calendar, MapPin, Upload } from "lucide-react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { getTeam } from "@/services/database/get-team";
+import { getTeam } from "@/services/database";
 
 export default function TeamPage() {
   const [teamInfo, setTeamInfo] = useState({

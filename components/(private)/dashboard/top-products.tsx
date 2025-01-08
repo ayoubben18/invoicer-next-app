@@ -17,7 +17,7 @@ const products = [
   { name: "Product E", sales: 65, revenue: "$6,500" },
 ];
 
-export function TopProducts() {
+function TopProducts() {
   return (
     <Table>
       <TableHeader>
@@ -39,3 +39,5 @@ export function TopProducts() {
     </Table>
   );
 }
+
+export default TopProducts;

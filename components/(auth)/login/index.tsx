@@ -23,7 +23,7 @@ import { z } from "zod";
 import { routes } from "@/routes";
 import FormError from "@/components/shared/form-error";
 
-export function LoginForm() {
+export default function LoginForm() {
   const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),

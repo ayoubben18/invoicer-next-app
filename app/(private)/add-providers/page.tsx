@@ -4,24 +4,24 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Send } from "lucide-react";
 import { toast } from "sonner";
-import { RecordingControls } from "@/components/shared/recording-controls";
+import { RecordingControls } from "@/components/shared";
 import { useRouter } from "next/navigation";
 
-export default function ProductsPage() {
+export default function CustomersPage() {
   const [isRecording, setIsRecording] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    price: "",
-    description: "",
+    email: "",
+    phone: "",
+    address: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Product added successfully");
-    setFormData({ name: "", price: "", description: "" });
+    toast.success("Customer added successfully");
+    setFormData({ name: "", email: "", phone: "", address: "" });
   };
 
   const handleStartRecording = () => {
@@ -46,14 +46,14 @@ export default function ProductsPage() {
       <div className="flex flex-row gap-4">
         {/* Go Back Button */}
         <Button
-          onClick={() => router.push("/products")}
+          onClick={() => router.push("/providers")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Go Back</span>
         </Button>
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Add Product</h1>
+          <h1 className="text-3xl font-bold">Add Provider</h1>
         </div>
       </div>
 
@@ -61,38 +61,51 @@ export default function ProductsPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Product Name</label>
+              <label className="text-sm font-medium">Full Name</label>
               <Input
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                placeholder="Enter product name"
+                placeholder="Enter customer name"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Price</label>
+              <label className="text-sm font-medium">Email</label>
               <Input
-                type="number"
-                value={formData.price}
+                type="email"
+                value={formData.email}
                 onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
+                  setFormData({ ...formData, email: e.target.value })
                 }
-                placeholder="Enter price"
+                placeholder="Enter email address"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Description</label>
-            <Textarea
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              placeholder="Enter product description"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Phone</label>
+              <Input
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Address</label>
+              <Input
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
+                placeholder="Enter address"
+              />
+            </div>
           </div>
 
           <div className="flex space-x-4">
@@ -105,7 +118,7 @@ export default function ProductsPage() {
 
             <Button type="submit" className="flex items-center space-x-2">
               <Send className="h-4 w-4" />
-              <span>Add Product</span>
+              <span>Add Customer</span>
             </Button>
           </div>
         </form>

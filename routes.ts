@@ -27,4 +27,12 @@ export const routes = {
       route: "/register",
     },
   },
+  add_products: {
+    route: "/add-products",
+    requiredAuth: true,
+  },
+  add_providers: {
+    route: "/add-providers",
+    requiredAuth: true,
+  },
 } as const;

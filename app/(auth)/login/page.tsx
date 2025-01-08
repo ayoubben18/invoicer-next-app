@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/(auth)/login/login-form";
+import { LoginForm } from "@/components/(auth)";
 import { Card } from "@/components/ui/card";
 import React from "react";
 

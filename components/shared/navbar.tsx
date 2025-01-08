@@ -1,10 +1,19 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Bot, LayoutDashboard, FileText, Package, Users, LogIn, UserPlus } from "lucide-react";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
+import {
+  Bot,
+  LayoutDashboard,
+  FileText,
+  Package,
+  Users,
+  LogIn,
+  UserPlus,
+} from "lucide-react";
+import { ThemeToggle } from "@/components/shared";
 import { useMutation } from "@tanstack/react-query";
 import { signOut } from "@/services/database";
 import { useRouter } from "next/navigation";
@@ -22,7 +31,7 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/products", icon: Package },
   { name: "Providers", href: "/providers", icon: Users },
-  { name: "Invoice", href: "/invoice", icon: FileText }
+  { name: "Invoice", href: "/invoice", icon: FileText },
 ];
 
 interface NavbarProps {
@@ -32,7 +41,7 @@ interface NavbarProps {
   };
 }
 
-export function Navbar({ user }: NavbarProps) {
+function Navbar({ user }: NavbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { mutateAsync } = useMutation({
@@ -43,13 +52,13 @@ export function Navbar({ user }: NavbarProps) {
   const getInitials = () => {
     if (user?.name) {
       return user.name
-        .split(' ')
-        .map(word => word[0])
+        .split(" ")
+        .map((word) => word[0])
         .slice(0, 2)
-        .join('')
+        .join("")
         .toUpperCase();
     }
-    return user.email?.slice(0, 2).toUpperCase() || 'U';
+    return user.email?.slice(0, 2).toUpperCase() || "U";
   };
 
   return (
@@ -60,7 +69,7 @@ export function Navbar({ user }: NavbarProps) {
             <FileText className="h-6 w-6 text-primary" />
             <span className="ml-2 text-lg font-semibold">Invoicer</span>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {user.email ? (
               <>
@@ -83,8 +92,8 @@ export function Navbar({ user }: NavbarProps) {
                   );
                 })}
 
-                <ThemeToggle />     
-                
+                <ThemeToggle />
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -124,7 +133,7 @@ export function Navbar({ user }: NavbarProps) {
               </>
             ) : (
               <div className="flex items-center space-x-2">
-                <ThemeToggle /> 
+                <ThemeToggle />
                 <Link href="/login">
                   <Button variant="outline" className="flex items-center gap-2">
                     <LogIn className="h-4 w-4" />
@@ -145,3 +154,5 @@ export function Navbar({ user }: NavbarProps) {
     </nav>
   );
 }
+
+export default Navbar;

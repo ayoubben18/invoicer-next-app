@@ -1,14 +1,16 @@
 import { Card } from "@/components/ui/card";
 import { DollarSign, Users, Package, TrendingUp } from "lucide-react";
-import { RevenueChart } from "@/components/dashboard/revenue-chart";
-import { TopProducts } from "@/components/dashboard/top-products";
-import { RecentInvoices } from "@/components/dashboard/recent-invoices";
+import {
+  RecentInvoices,
+  RevenueChart,
+  TopProducts,
+} from "@/components/(private)/dashboard";
 
 export default function Dashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card className="p-6">
           <div className="flex items-center space-x-4">
@@ -22,7 +24,7 @@ export default function Dashboard() {
             </div>
           </div>
         </Card>
-        
+
         <Card className="p-6">
           <div className="flex items-center space-x-4">
             <div className="p-2 bg-primary/10 rounded-full">

@@ -19,7 +19,7 @@ import {
   updateProductQuantity,
 } from "@/services/database/sales";
 import { toast } from "sonner";
-import { getTeam } from "@/services/database/get-team";
+import { getTeam } from "@/services/database";
 
 interface TeamInfo {
   name: string;
@@ -73,7 +73,7 @@ export default function SalesPage() {
     queryFn: () => getAvailableProducts(),
   });
 
-  const {mutateAsync: updateQuantityMutation , isPending} = useMutation({
+  const { mutateAsync: updateQuantityMutation, isPending } = useMutation({
     mutationFn: updateProductQuantity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["available-products"] });
@@ -132,7 +132,7 @@ export default function SalesPage() {
       );
       setSaleItems([]);
       setCustomerName("");
-      toast.info("Sale operation has been successfully")
+      toast.info("Sale operation has been successfully");
     } catch (error) {
       console.error("Error processing sale:", error);
     }
@@ -252,7 +252,7 @@ export default function SalesPage() {
 
             <div className="flex gap-4">
               <Button onClick={processSale} className="flex-1">
-                {isPending ? "Loading ..."  : "Complete Sale"}
+                {isPending ? "Loading ..." : "Complete Sale"}
               </Button>
               <Button variant="outline" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" />

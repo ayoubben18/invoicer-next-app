@@ -20,7 +20,7 @@ const data = [
   { month: "Jul", revenue: 3490 },
 ];
 
-export function RevenueChart() {
+function RevenueChart() {
   return (
     <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -56,3 +56,5 @@ export function RevenueChart() {
     </div>
   );
 }
+
+export default RevenueChart;

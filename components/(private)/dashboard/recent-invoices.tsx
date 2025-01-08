@@ -42,7 +42,7 @@ const invoices = [
   },
 ];
 
-export function RecentInvoices() {
+function RecentInvoices() {
   return (
     <Table>
       <TableHeader>
@@ -89,3 +89,5 @@ export function RecentInvoices() {
     </Table>
   );
 }
+
+export default RecentInvoices;
