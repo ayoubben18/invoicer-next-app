@@ -34,6 +34,7 @@ An intelligent SaaS platform that combines AI voice interactions with inventory 
 ## 🛠 Tech Stack
 
 - **Frontend**: Next.js 15
+- **Langchain** : LLM framework for building AI applications
 - **Infrastructure**: SST (Serverless Stack)
 - **AI Integration**: OpenAI API
 - **Voice/SMS**: Twilio
